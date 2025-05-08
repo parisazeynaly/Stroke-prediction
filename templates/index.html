@@ -36,10 +36,9 @@
 
         <form action="/predict" method="post">
             {% for feature in features %}
-                <div class="mb-3">
-                    <label for="{{ feature }}" class="form-label">{{ feature | capitalize }}</label>
-                    <input type="text" name="{{ feature }}" class="form-control" required>
-                </div>
+            {% set safe_id = feature.replace(' ', '_').replace('(', '').replace(')', '').replace('/', '_') %}
+            <label for="{{ safe_id }}" class="form-label">{{ feature | capitalize }}</label>
+            <input type="text" id="{{ safe_id }}" name="{{ feature }}" class="form-control" required>
             {% endfor %}
             <div class="text-center">
                 <button type="submit" class="btn btn-primary">Predict</button>
