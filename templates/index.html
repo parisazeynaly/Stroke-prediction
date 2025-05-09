@@ -34,16 +34,65 @@
         <h2 class="text-center mb-4">Stroke Risk Prediction</h2>
         <p>Enter patient information below to predict stroke risk:</p>
 
-        <form action="/predict" method="post">
-            {% for feature in features %}
-            {% set safe_id = feature.replace(' ', '_').replace('(', '').replace(')', '').replace('/', '_') %}
-            <label for="{{ safe_id }}" class="form-label">{{ feature | capitalize }}</label>
-            <input type="text" id="{{ safe_id }}" name="{{ feature }}" class="form-control" required>
-            {% endfor %}
-            <div class="text-center">
-                <button type="submit" class="btn btn-primary">Predict</button>
-            </div>
-        </form>
+        <form method="POST" action="/">
+    <label>Gender:</label>
+    <select name="gender">
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Other">Other</option>
+    </select>
+
+    <label>Age:</label>
+    <input type="number" name="age" required>
+
+    <label>Hypertension:</label>
+    <select name="hypertension">
+        <option value="0">No</option>
+        <option value="1">Yes</option>
+    </select>
+
+    <label>Heart Disease:</label>
+    <select name="disease">
+        <option value="0">No</option>
+        <option value="1">Yes</option>
+    </select>
+
+    <label>Married:</label>
+    <select name="married">
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+    </select>
+
+    <label>Work Type:</label>
+    <select name="work">
+        <option value="Private">Private</option>
+        <option value="Self-employed">Self-employed</option>
+        <option value="Never_worked">Never_worked</option>
+        <option value="children">children</option>
+    </select>
+
+    <label>Residence Type:</label>
+    <select name="residence">
+        <option value="Urban">Urban</option>
+        <option value="Rural">Rural</option>
+    </select>
+
+    <label>Glucose:</label>
+    <input type="number" name="glucose" step="0.1" required>
+
+    <label>BMI:</label>
+    <input type="number" name="bmi" step="0.1" required>
+
+    <label>Smoking:</label>
+    <select name="smoking">
+        <option value="never smoked">never smoked</option>
+        <option value="formerly smoked">formerly smoked</option>
+        <option value="smokes">smokes</option>
+    </select>
+
+    <button type="submit" class="btn btn-primary">Predict</button>
+</form>
+
 
         {% if prediction %}
             <div class="result text-center">
