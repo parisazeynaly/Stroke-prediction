@@ -29,78 +29,173 @@
 </head>
 <body>
 
-<div class="container">
-    <div class="form-container">
-        <h2 class="text-center mb-4">Stroke Risk Prediction</h2>
-        <p>Enter patient information below to predict stroke risk:</p>
+<!--<div class="container">-->
+<!--    <div class="form-container">-->
+<!--        <p>Enter patient information below to predict stroke risk:</p>-->
 
-        <form method="POST" action="/">
-    <label>Gender:</label>
-    <select name="gender">
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-        <option value="Other">Other</option>
-    </select>
+<!--        <form method="POST" action="/">-->
+<!--    <label>Gender:</label>-->
+<!--    <select name="gender">-->
+<!--        <option value="Male">Male</option>-->
+<!--        <option value="Female">Female</option>-->
+<!--        <option value="Other">Other</option>-->
+<!--    </select>-->
 
-    <label>Age:</label>
-    <input type="number" name="age" required>
+<!--    <label>Age:</label>-->
+<!--    <input type="number" name="age" required>-->
 
-    <label>Hypertension:</label>
-    <select name="hypertension">
-        <option value="0">No</option>
-        <option value="1">Yes</option>
-    </select>
+<!--    <label>Hypertension:</label>-->
+<!--    <select name="hypertension">-->
+<!--        <option value="0">No</option>-->
+<!--        <option value="1">Yes</option>-->
+<!--    </select>-->
 
-    <label>Heart Disease:</label>
-    <select name="disease">
-        <option value="0">No</option>
-        <option value="1">Yes</option>
-    </select>
+<!--    <label>Heart Disease:</label>-->
+<!--    <select name="disease">-->
+<!--        <option value="0">No</option>-->
+<!--        <option value="1">Yes</option>-->
+<!--    </select>-->
 
-    <label>Married:</label>
-    <select name="married">
-        <option value="Yes">Yes</option>
-        <option value="No">No</option>
-    </select>
+<!--    <label>Married:</label>-->
+<!--    <select name="married">-->
+<!--        <option value="Yes">Yes</option>-->
+<!--        <option value="No">No</option>-->
+<!--    </select>-->
 
-    <label>Work Type:</label>
-    <select name="work">
-        <option value="Private">Private</option>
-        <option value="Self-employed">Self-employed</option>
-        <option value="Never_worked">Never_worked</option>
-        <option value="children">children</option>
-    </select>
+<!--    <label>Work Type:</label>-->
+<!--    <select name="work">-->
+<!--        <option value="Private">Private</option>-->
+<!--        <option value="Self-employed">Self-employed</option>-->
+<!--        <option value="Never_worked">Never_worked</option>-->
+<!--        <option value="children">children</option>-->
+<!--    </select>-->
 
-    <label>Residence Type:</label>
-    <select name="residence">
-        <option value="Urban">Urban</option>
-        <option value="Rural">Rural</option>
-    </select>
+<!--    <label>Residence Type:</label>-->
+<!--    <select name="residence">-->
+<!--        <option value="Urban">Urban</option>-->
+<!--        <option value="Rural">Rural</option>-->
+<!--    </select>-->
 
-    <label>Glucose:</label>
-    <input type="number" name="glucose" step="0.1" required>
+<!--    <label>Glucose:</label>-->
+<!--    <input type="number" name="glucose" step="0.1" required>-->
 
-    <label>BMI:</label>
-    <input type="number" name="bmi" step="0.1" required>
+<!--    <label>BMI:</label>-->
+<!--    <input type="number" name="bmi" step="0.1" required>-->
 
-    <label>Smoking:</label>
-    <select name="smoking">
-        <option value="never smoked">never smoked</option>
-        <option value="formerly smoked">formerly smoked</option>
-        <option value="smokes">smokes</option>
-    </select>
+<!--    <label>Smoking:</label>-->
+<!--    <select name="smoking">-->
+<!--        <option value="never smoked">never smoked</option>-->
+<!--        <option value="formerly smoked">formerly smoked</option>-->
+<!--        <option value="smokes">smokes</option>-->
+<!--    </select>-->
 
-    <button type="submit" class="btn btn-primary">Predict</button>
-</form>
+<!--    <button type="submit" class="btn btn-primary">Predict</button>-->
+<!--</form>-->
 
 
-        {% if prediction %}
-            <div class="result text-center">
-                <h4>Prediction: {{ prediction }}</h4>
-            </div>
-        {% endif %}
+<!--        {% if prediction %}-->
+<!--            <div class="result text-center">-->
+<!--                <h4>Prediction: {{ prediction }}</h4>-->
+<!--            </div>-->
+<!--        {% endif %}-->
+<!--    </div>-->
+<!--</div>-->
+
+<div class="container mt-5">
+    <div class="card mx-auto shadow" style="max-width: 600px;">
+        <div class="card-body">
+            <h2 class="text-center mb-4">Stroke Risk Prediction</h2>
+                    <h2 class="text-center mb-4">Stroke Risk Prediction</h2>
+
+            <form method="POST" action="/">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label>Gender:</label>
+                        <select name="gender" class="form-control">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label>Age:</label>
+                        <input type="number" name="age" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label>Hypertension:</label>
+                        <select name="hypertension" class="form-control">
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label>Heart Disease:</label>
+                        <select name="disease" class="form-control">
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label>Married:</label>
+                        <select name="married" class="form-control">
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label>Work Type:</label>
+                        <select name="work" class="form-control">
+                            <option value="Private">Private</option>
+                            <option value="Self-employed">Self-employed</option>
+                            <option value="Never_worked">Never_worked</option>
+                            <option value="children">children</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label>Residence Type:</label>
+                        <select name="residence" class="form-control">
+                            <option value="Urban">Urban</option>
+                            <option value="Rural">Rural</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label>Glucose:</label>
+                        <input type="number" step="0.1" name="glucose" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label>BMI:</label>
+                        <input type="number" step="0.1" name="bmi" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label>Smoking:</label>
+                        <select name="smoking" class="form-control">
+                            <option value="never smoked">never smoked</option>
+                            <option value="formerly smoked">formerly smoked</option>
+                            <option value="smokes">smokes</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Predict</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
+
 
 <!-- Bootstrap Bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
