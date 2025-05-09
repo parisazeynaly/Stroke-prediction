@@ -200,7 +200,7 @@ def home():
         ]])
 
         final_features_scaled = scaler.fit_transform(final_features)
-        prediction = mode.l.predict(final_features_scaled)[0]
+        prediction = model.predict(final_features_scaled)[0]
         prediction = "YES" if prediction == 1 else "NO"
 
         return render_template("index.html", features=features,
