@@ -141,6 +141,24 @@ import pickle
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+
+# --- Initial Setup ---
+app = Flask(__name__)
+# app.secret_key = os.getenv('FLASK_SECRET_KEY', 'supersecretkey')  # Set this securely
+
+limiter = Limiter(get_remote_address, app=app)
+
+
+# # Secure config
+# app.config.update(
+#     SESSION_COOKIE_HTTPONLY=True,
+#     SESSION_COOKIE_SECURE=True,
+#     SESSION_COOKIE_SAMESITE='Lax'
+# )
+
+# --- Load ML Model ---
 model = pickle.load(open("model_pickle.pkl", 'rb'))
 scaler = StandardScaler()
 
