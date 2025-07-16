@@ -1,8 +1,16 @@
-# Stroke-prediction
+# Stroke Risk Prediction: Project Overview
 A machine learning web application that predicts the likelihood of a person having a stroke based on health-related inputs. Built using Flask, Scikit-learn, Docker, and deployed with CI/CD via GitHub Actions and Render.
+Deployment Link: https://stroke-prediction-2brs.onrender.com
 
-Demo:
+Code and Resources Used:
+Python Version: 3.7
+Packages: pandas, numpy, sklearn, matplotlib, seaborn, imblearn, flask, pickle, plotly.
 
+Business Problem / Objective:
+According to the World Health Organization (WHO) stroke is the 2nd leading cause of death globally, responsible for approximately 11% of total deaths. Use this dataset to predict whether a patient is likely to get a stroke based on the input parameters like gender, age, various diseases, and smoking status. Each row in the data provides relevant information about the patient.
+
+
+For Web Framework Requirements: pip install -r requirements.txt
 Predict stroke risk based on user inputs (age, hypertension, heart disease, etc.)
 
 Built with RandomForestClassifier and serialized using pickle
