@@ -1,64 +1,73 @@
-# Stroke Risk Prediction: Project Overview
-A machine learning web application that predicts the likelihood of a person having a stroke based on health-related inputs. Built using Flask, Scikit-learn, Docker, and deployed with CI/CD via GitHub Actions and Render.
-Deployment Link: https://stroke-prediction-2brs.onrender.com
+#  Stroke Prediction with MLflow & Docker
 
-Code and Resources Used:
-Python Version: 3.7
-Packages: pandas, numpy, sklearn, matplotlib, seaborn, imblearn, flask, pickle, plotly.
+This project predicts the likelihood of a stroke using patient data and machine learning. It includes full MLOps practices such as experiment tracking, model registry, and deployment with Docker.
 
-Business Problem / Objective:
-According to the World Health Organization (WHO) stroke is the 2nd leading cause of death globally, responsible for approximately 11% of total deaths. Use this dataset to predict whether a patient is likely to get a stroke based on the input parameters like gender, age, various diseases, and smoking status. Each row in the data provides relevant information about the patient.
+## Dataset
 
+- Source: [Kaggle - Stroke Prediction Dataset](https://www.kaggle.com/fedesoriano/stroke-prediction-dataset)
+- Features: age, gender, hypertension, heart disease, BMI, smoking status, etc.
 
-For Web Framework Requirements: pip install -r requirements.txt
-Predict stroke risk based on user inputs (age, hypertension, heart disease, etc.)
+##  Features
 
-Built with RandomForestClassifier and serialized using pickle
+✅ ML pipeline with Scikit-learn  
+✅ Exploratory Data Analysis (EDA)  
+✅ Model training and evaluation  
+✅ MLflow experiment tracking  
+✅ Model registry with MLflow  
+✅ Adversarial testing (optional)  
+✅ Dockerized Flask app for predictions  
+✅ Web UI for user input
 
-Web frontend using Flask & HTML templates
+## Tech Stack
 
-Containerized using Docker
+- Python 3.11
+- Scikit-learn
+- Pandas / Seaborn / Matplotlib
+- MLflow (experiment tracking, model registry)
+- Docker (deployment)
+- Flask (Web API)
 
-Automated CI/CD pipeline with GitHub Actions
+## How to Run
 
-Deployed on Render.
+### Step 1: Clone the Repo
 
-⚙️ Setup Instructions
+```bash
+git clone https://github.com/yourusername/stroke-prediction.git
+cd stroke-prediction
 
-git clone https://github.com/parisazeynaly/Stroke-prediction.git
-
-Install dependencies
+Setup Environment
+bash
+Copy
+Edit
 pip install -r requirements.txt
 
-Run the app
-python app.py
-Then open http://localhost:5000
 
-Docker (optional)
+Train Models and Log with MLflow:  python train.py
+mlflow UI
 
-Build: docker build -t stroke-predictor .
+Run Docker App:
+docker build -t stroke-app .
+docker run -p 5000:5000 stroke-app
 
-Run: docker run -p 5000:5000 stroke-predictor
+Project Structure
 
-🧪 ML Model
-Algorithm: RandomForestClassifier
+├── app.py              # Flask app for user input and prediction
+├── train.py            # Model training and MLflow logging
+├── Dockerfile          # For containerization
+├── templates/
+│   └── index.html      # Frontend form
+├── model_pickle.pkl    # Saved best model
+├── scaler.pkl          # Saved StandardScaler
+├── requirements.txt    # Python dependencies
+└── README.md
 
-Preprocessing: Standard scaling, feature selection
+Contact:
+Feel free to reach out if you have any questions!
 
-Evaluation: Accuracy, confusion matrix
+Future Work:
+ Fairness testing using AIF360
 
-Saved as: model_pickle.pkl
+⬜ Add model serving via MLflow REST API
 
-🔄 CI/CD Workflow
-On every push, GitHub Actions:
-
-Runs Docker build
-
-Checks dependencies
-
-Then auto-deploys via Render
-
-Feel free to open an issue or contribute!
-
-
+⬜ Automate training with GitHub Actions
 
