@@ -29,7 +29,7 @@ This project predicts the likelihood of a stroke using patient data and machine 
 
 ## How to Run
 
-### Step 1: Clone the Repo
+### Clone the Repo
 
 ```bash
 git clone https://github.com/yourusername/stroke-prediction.git
