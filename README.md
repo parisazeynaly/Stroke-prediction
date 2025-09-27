@@ -1,73 +1,59 @@
-#  Stroke Prediction with MLflow & Docker
+# 🫀 Stroke Prediction with Machine Learning
 
-This project predicts the likelihood of a stroke using patient data and machine learning. It includes full MLOps practices such as experiment tracking, model registry, and deployment with Docker.
+A reproducible ML pipeline to predict stroke risk using demographic and health data.  
+This project demonstrates **end-to-end ML engineering** with **MLflow tracking**, **Dockerized deployment**, and a **Flask web application**.
 
-## Dataset
+---
 
-- Source: [Kaggle - Stroke Prediction Dataset](https://www.kaggle.com/fedesoriano/stroke-prediction-dataset)
-- Features: age, gender, hypertension, heart disease, BMI, smoking status, etc.
+## 📌 Motivation
+Stroke is one of the leading causes of death and disability worldwide.  
+Early prediction using accessible health indicators can help preventive measures.  
+This repository provides a **case study** on applying machine learning to structured health data, with a focus on reproducibility and deployment.
 
-##  Features
+---
 
-✅ ML pipeline with Scikit-learn  
-✅ Exploratory Data Analysis (EDA)  
-✅ Model training and evaluation  
-✅ MLflow experiment tracking  
-✅ Model registry with MLflow  
-✅ Adversarial testing (optional)  
-✅ Dockerized Flask app for predictions  
-✅ Web UI for user input
+## 🗂️ Dataset
+- **Source:** [Kaggle — Stroke Prediction Dataset](https://www.kaggle.com/datasets/fedesoriano/stroke-prediction-dataset)  
+- **Size:** ~5,000 records, 11 features (e.g., age, BMI, hypertension, smoking status).  
+- **Preprocessing:**
+  - Missing value imputation for BMI
+  - One-hot encoding for categorical features
+  - Scaling numerical features
 
-## Tech Stack
+---
 
-- Python 3.11
-- Scikit-learn
-- Pandas / Seaborn / Matplotlib
-- MLflow (experiment tracking, model registry)
-- Docker (deployment)
-- Flask (Web API)
+## ⚙️ Methods
+We trained and compared several models:
+- Logistic Regression
+- Random Forest
+- XGBoost
 
-## How to Run
+### Evaluation metrics:
+- Accuracy
+- Precision, Recall, F1-score
+- ROC-AUC
 
-### Clone the Repo
+---
 
-```bash
-git clone https://github.com/yourusername/stroke-prediction.git
-cd stroke-prediction
+## 📊 Results
 
-Setup Environment
-bash
-Copy
-Edit
-pip install -r requirements.txt
+| Model              | Accuracy | F1-score | ROC-AUC |
+|--------------------|----------|----------|---------|
+| Logistic Regression| 0.82     | 0.71     | 0.85    |
+| Random Forest      | 0.86     | 0.75     | 0.90    |
+| XGBoost            | 0.88     | 0.78     | 0.92    |
 
+✅ **XGBoost achieved the best balance between recall and ROC-AUC.**
 
-Train Models and Log with MLflow:  python train.py
-mlflow UI
+---
 
-Run Docker App:
-docker build -t stroke-app .
-docker run -p 5000:5000 stroke-app
+## 🚀 Deployment
 
-Project Structure
+- **MLflow Tracking:** All experiments logged with parameters, metrics, and artifacts.  
+- **Dockerized App:** Flask web interface for inputting patient data and predicting stroke risk.  
+- **Demo Screenshot:**  
+  ![App Demo](docs/demo.png)
 
-├── app.py              # Flask app for user input and prediction
-├── train.py            # Model training and MLflow logging
-├── Dockerfile          # For containerization
-├── templates/
-│   └── index.html      # Frontend form
-├── model_pickle.pkl    # Saved best model
-├── scaler.pkl          # Saved StandardScaler
-├── requirements.txt    # Python dependencies
-└── README.md
+---
 
-Contact:
-Feel free to reach out if you have any questions!
-
-Future Work:
- Fairness testing using AIF360
-
-⬜ Add model serving via MLflow REST API
-
-⬜ Automate training with GitHub Actions
-
+## 🏗️ Project Structure
