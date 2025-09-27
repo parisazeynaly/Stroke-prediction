@@ -43,7 +43,7 @@ We trained and compared several models:
 | Random Forest      | 0.86     | 0.75     | 0.90    |
 | XGBoost            | 0.88     | 0.78     | 0.92    |
 
-✅ **XGBoost achieved the best balance between recall and ROC-AUC.**
+✅ **XGBoost achieved the best balance between recall and ROC-AUC**
 
 ---
 
@@ -57,3 +57,17 @@ We trained and compared several models:
 ---
 
 ## 🏗️ Project Structure
+Stroke-prediction/
+├── src/
+│ ├── data_preprocessing.py
+│ ├── stroke_prediction.py # main training & evaluation
+│ └── utils.py
+├── app/
+│ ├── app.py # Flask web server
+│ └── templates/
+│ └── index.html
+├── notebooks/ # EDA & model experiments
+├── requirements.txt
+├── Dockerfile
+├── mlruns/ # MLflow artifacts
+└── README.md
