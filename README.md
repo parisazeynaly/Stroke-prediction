@@ -1,7 +1,7 @@
 # 🫀 Stroke Prediction with Machine Learning
 
 A reproducible ML pipeline to predict stroke risk using demographic and health data.  
-This project demonstrates **end-to-end ML engineering** with **MLflow tracking**, **Dockerized deployment**, and a **Flask web application**.XAI
+This project demonstrates **end-to-end ML engineering** with **MLflow tracking**, **Dockerized deployment**, and a **Flask web application**.
 
 ---
 
