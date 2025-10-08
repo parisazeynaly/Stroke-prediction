@@ -1,18 +1,18 @@
-# 🫀 Stroke Prediction with Machine Learning
+#  Stroke Prediction with Machine Learning
 
 A reproducible ML pipeline to predict stroke risk using demographic and health data.  
 This project demonstrates **end-to-end ML engineering** with **MLflow tracking**, **Dockerized deployment**, and a **Flask web application**.
 
 ---
 
-## 📌 Motivation
+##  Motivation
 Stroke is one of the leading causes of death and disability worldwide.  
-Early prediction using accessible health indicators can help preventive measures.  
+Early prediction using accessible health indicators can help with preventive measures.  
 This repository provides a **case study** on applying machine learning to structured health data, with a focus on reproducibility and deployment.
 
 ---
 
-## 🗂️ Dataset
+##  Dataset
 - **Source:** [Kaggle — Stroke Prediction Dataset](https://www.kaggle.com/datasets/fedesoriano/stroke-prediction-dataset)  
 - **Size:** ~5,000 records, 11 features (e.g., age, BMI, hypertension, smoking status).  
 - **Preprocessing:**
@@ -35,7 +35,7 @@ We trained and compared several models:
 
 ---
 
-## 📊 Results
+##  Results
 
 | Model              | Accuracy | F1-score | ROC-AUC |
 |--------------------|----------|----------|---------|
@@ -43,11 +43,11 @@ We trained and compared several models:
 | Random Forest      | 0.86     | 0.75     | 0.90    |
 | XGBoost            | 0.88     | 0.78     | 0.92    |
 
-✅ **XGBoost achieved the best balance between recall and ROC-AUC**
+ **XGBoost achieved the best balance between recall and ROC-AUC**
 
 ---
 
-## 🚀 Deployment
+##  Deployment
 
 - **MLflow Tracking:** All experiments logged with parameters, metrics, and artifacts.  
 - **Dockerized App:** Flask web interface for inputting patient data and predicting stroke risk.  
@@ -56,7 +56,7 @@ We trained and compared several models:
 
 ---
 
-## 🏗️ Project Structure
+## Project Structure
 Stroke-prediction/
 ├── src/
 │ ├── data_preprocessing.py
@@ -71,3 +71,15 @@ Stroke-prediction/
 ├── Dockerfile
 ├── mlruns/ # MLflow artifacts
 └── README.md
+
+
+##  Conclusion
+
+This project developed and benchmarked multiple machine learning models for **stroke prediction** using structured health data.  
+Through systematic preprocessing, model comparison, and robustness testing, we demonstrated that ensemble-based methods such as **Random Forest** and **XGBoost** achieved the best balance between accuracy and stability.  
+
+The results highlight the importance of proper handling of class imbalance, feature scaling, and rigorous evaluation using F1(+), ROC-AUC, and PR-AUC metrics.  
+Robustness analysis under small input perturbations confirmed that the best models maintained high performance even with noisy data, emphasizing their reliability for clinical risk estimation tasks.  
+
+While no explainability (XAI) module was used in this phase, the pipeline is designed to be fully extendable for future integration with explainable or trustworthy AI components.  
+This concludes the **Stroke Prediction** study and provides a solid methodological foundation for subsequent projects focusing on **RAG + Guardrail + XAI** architectures.
