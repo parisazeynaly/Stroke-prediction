@@ -1,1 +1,4 @@
+*.pkl
+mlruns/
+data/
 
