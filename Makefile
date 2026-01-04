@@ -15,13 +15,12 @@ setup:
 	$(PIP) install -r requirements.txt
 
 train:
-	$(PYTHON) -m stroke_prediction.train
+	PYTHONPATH=src python -m stroke_prediction.train
 
 eval:
-	$(PYTHON) -m stroke_prediction.evaluate
-
-reproduce: train eval
+	PYTHONPATH=src python -m stroke_prediction.evaluate
 
 run-api:
-	$(PYTHON) app/app.py
+	PYTHONPATH=src python app/app.py
+
 
