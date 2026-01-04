@@ -1,4 +1,28 @@
-*.pkl
-mlruns/
-data/
+# Python
+__pycache__/
+*.pyc
+*.pyo
 
+# Virtual environments
+.venv/
+venv/
+
+# Data
+data/
+*.csv
+
+# Model artifacts
+*.pkl
+*.joblib
+
+# MLflow
+mlruns/
+
+# Reports and outputs
+outputs/
+reports/*.png
+reports/*.pdf
+
+# OS
+.DS_Store
+Thumbs.db
