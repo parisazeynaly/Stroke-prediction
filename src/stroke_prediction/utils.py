@@ -18,34 +18,57 @@ import matplotlib.pyplot as plt
 import joblib,
 import os
 
-# Load the dataset
-df = pd.read_csv("healthcare-dataset-stroke-data.csv")
-
-print("--- First 5 rows of the dataset ---")
-print(df.head())
-
-print("\n--- Dataset Shape ---")
-print(f"Rows: {df.shape[0]}, Columns: {df.shape[1]}")
-
-print("\n--- Dataset Information ---")
-df.info()
-
-print("\n--- Descriptive Statistics ---")
-print(df.describe())
+import pandas as pd
+from sklearn.preprocessing import OneHotEncoder
 
 
-print("\n--- Missing Values Count per Column ---")
-print(df.isna().sum())
+def load_data(csv_path: str) -> pd.DataFrame:
+    """
+    Load raw stroke dataset from CSV.
+    """
+    return pd.read_csv(csv_path)
 
-print("\n--- Column Names ---")
-print(df.columns.tolist())
 
+def make_xy(df: pd.DataFrame):
+    """
+    Preprocess the dataset and return features X and target y.
 
-### 3. Handle Missing Values (BMI)
+    This function must be deterministic and reusable.
+    """
+    df = df.copy()
 
-# The 'bmi' column has missing values, which will be imputed using KNNImputer.
-imputer = KNNImputer(n_neighbors=5)
-df['bmi'] = imputer.fit_transform(df[['bmi']])
+    # Drop ID column
+    if "id" in df.columns:
+        df = df.drop(columns=["id"])
 
-print("\n--- Missing Values after BMI Imputation ---")
-print(df.isna().sum())
+    # Target
+    y = df["stroke"]
+    X = df.drop(columns=["stroke"])
+
+    # Column types
+    numeric_features = X.select_dtypes(include=["int64", "float64"]).columns
+    categorical_features = X.select_dtypes(include=["object"]).columns
+
+    # Preprocessing pipelines
+    numeric_pipeline = Pipeline(
+        steps=[
+            ("imputer", KNNImputer(n_neighbors=5))
+        ]
+    )
+
+    categorical_pipeline = Pipeline(
+        steps=[
+            ("encoder", OneHotEncoder(handle_unknown="ignore", sparse_output=False))
+        ]
+    )
+
+    preprocessor = ColumnTransformer(
+        transformers=[
+            ("num", numeric_pipeline, numeric_features),
+            ("cat", categorical_pipeline, categorical_features),
+        ]
+    )
+
+    X_processed = preprocessor.fit_transform(X)
+
+    return X_processed, y, preprocessor
