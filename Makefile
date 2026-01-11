@@ -20,8 +20,6 @@ train:
 eval:
 	PYTHONPATH=src python -m stroke_prediction.evaluate
 
-
-run-api:
-	PYTHONPATH=src python app/app.py
+reproduce: train eval
 
 
