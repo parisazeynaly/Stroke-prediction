@@ -2,6 +2,7 @@
 
 from pathlib import Path
 import joblib
+import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 
@@ -18,32 +19,31 @@ def main():
     print("[train] Loading data...")
     df = load_data(str(DATA_PATH))
 
-    print("[train] Preprocessing...")
-    X, y, preprocessor = make_xy(df)
+    print("[train] Preprocessing (fit preprocessor)...")
+    X_all, y, preprocessor = make_xy(df)  # fit happens here (in utils)
 
     print("[train] Splitting...")
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, random_state=42, stratify=y
+    indices = np.arange(len(y))
+    train_idx, test_idx = train_test_split(
+        indices, test_size=0.2, random_state=42, stratify=y
     )
 
-    print("[train] Training baseline model (Logistic Regression)...")
-    model = LogisticRegression(max_iter=2000)
+    X_train = X_all[train_idx]
+    y_train = y.iloc[train_idx]
+
+    print("[train] Training Logistic Regression (class_weight=balanced)...")
+    model = LogisticRegression(max_iter=3000, class_weight="balanced")
     model.fit(X_train, y_train)
 
     print("[train] Saving artifacts to outputs/ ...")
     joblib.dump(model, OUTPUT_DIR / "model.joblib")
     joblib.dump(preprocessor, OUTPUT_DIR / "preprocessor.joblib")
-
-    # Save split indices for deterministic evaluation (important!)
-    # This makes evaluate.py use the *same* test set every time.
-    joblib.dump(
-        {"test_indices_count": len(y_test)},
-        OUTPUT_DIR / "split_info.joblib"
-    )
+    joblib.dump(test_idx, OUTPUT_DIR / "test_idx.joblib")
 
     print("[train] Done. Saved:")
     print("  outputs/model.joblib")
     print("  outputs/preprocessor.joblib")
+    print("  outputs/test_idx.joblib")
 
 
 if __name__ == "__main__":
