@@ -1,9 +1,8 @@
 # src/stroke_prediction/evaluate.py
+import matplotlib.pyplot as plt
+from sklearn.calibration import calibration_curve, CalibratedClassifierCV
+from sklearn.metrics import brier_score_loss
 
-from pathlib import Path
-import json
-import joblib
-import numpy as np
 
 from sklearn.metrics import (
     accuracy_score, f1_score, roc_auc_score, average_precision_score,
@@ -37,8 +36,8 @@ def main():
     df = load_data(str(DATA_PATH))
 
     # Important: use the same preprocessing function and indices.
-    # make_xy fits a preprocessor; for strict correctness we should avoid refitting.
-    # Since you already saved preprocessor, the next refinement is to refactor utils
+    # make_xy fits a preprocessor; for strict correctness, we should avoid refitting.
+    # Since you already saved the preprocessor, the next refinement is to refactor utils
     # to separate fit/transform. For now, we keep indices fixed so evaluation is consistent.
     X_all, y, _ = make_xy(df)
 
@@ -49,6 +48,22 @@ def main():
     if not hasattr(model, "predict_proba"):
         raise RuntimeError("Model does not support predict_proba; cannot do threshold tuning.")
     y_prob = model.predict_proba(X_test)[:, 1]
+    # --- Calibration metrics (uncalibrated) ---
+brier = float(brier_score_loss(y_test, y_prob))
+
+# reliability curve
+prob_true, prob_pred = calibration_curve(y_test, y_prob, n_bins=10, strategy="uniform")
+
+# plot reliability diagram
+    plt.figure()
+    plt.plot(prob_pred, prob_true, marker="o", linewidth=1)
+    plt.plot([0, 1], [0, 1], linestyle="--", linewidth=1)
+    plt.xlabel("Mean predicted probability")
+    plt.ylabel("Fraction of positives")
+    plt.title("Calibration curve (uncalibrated)")
+    plt.tight_layout()
+    plt.savefig(REPORTS_DIR / "calibration_curve_uncalibrated.png", dpi=200)
+    plt.close()
 
     # default threshold=0.5
     y_pred_05 = (y_prob >= 0.5).astype(int)
@@ -103,3 +118,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
