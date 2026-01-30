@@ -1,5 +1,7 @@
 {
   "base_rate_test": 0.04892367906066536,
+     "roc_auc": float(roc_auc_score(y_test, y_prob)),
+        "pr_auc": float(average_precision_score(y_test, y_prob)),
   "roc_auc": 0.8434979423868313,
   "pr_auc": 0.2683440732945993,
   "threshold_0.5": {
