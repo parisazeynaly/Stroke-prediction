@@ -1,74 +1,50 @@
-import pandas as pd
-import numpy as np
-import logging
-from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.impute import KNNImputer
-from sklearn.svm import SVC
-from sklearn.linear_model import LogisticRegression
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.tree import DecisionTreeClassifier
-import seaborn as sns
-from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import OneHotEncoder, StandardScaler
-from sklearn.metrics import (accuracy_score, f1_score, roc_auc_score, average_precision_score,
-                             classification_report, ConfusionMatrixDisplay)
-from sklearn.ensemble import RandomForestClassifier
-import matplotlib.pyplot as plt
-import joblib
-import os
+# src/stroke_prediction/utils.py
 
 import pandas as pd
-from sklearn.preprocessing import OneHotEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.impute import KNNImputer
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
 
 def load_data(csv_path: str) -> pd.DataFrame:
-    """
-    Load raw stroke dataset from CSV.
-    """
+    """Load raw stroke dataset from CSV."""
     return pd.read_csv(csv_path)
+
+
+def make_preprocessor(X: pd.DataFrame) -> ColumnTransformer:
+    """
+    Build (but do NOT fit) the preprocessing pipeline for features X.
+    Call .fit_transform(X_train) during training, then .transform(X_test) during eval.
+    """
+    numeric_features = X.select_dtypes(include=["int64", "float64"]).columns.tolist()
+    categorical_features = X.select_dtypes(include=["object"]).columns.tolist()
+
+    numeric_pipeline = Pipeline(steps=[
+        ("imputer", KNNImputer(n_neighbors=5)),
+        ("scaler", StandardScaler()),
+    ])
+
+    categorical_pipeline = Pipeline(steps=[
+        ("encoder", OneHotEncoder(handle_unknown="ignore", sparse_output=False)),
+    ])
+
+    preprocessor = ColumnTransformer(transformers=[
+        ("num", numeric_pipeline, numeric_features),
+        ("cat", categorical_pipeline, categorical_features),
+    ])
+
+    return preprocessor
 
 
 def make_xy(df: pd.DataFrame):
     """
-    Preprocess the dataset and return features X and target y.
-
-    This function must be deterministic and reusable.
+    Split df into features X and target y. Does NOT fit a preprocessor.
+    Returns X (DataFrame), y (Series).
     """
     df = df.copy()
-
-    # Drop ID column
     if "id" in df.columns:
         df = df.drop(columns=["id"])
-
-    # Target
     y = df["stroke"]
     X = df.drop(columns=["stroke"])
-
-    # Column types
-    numeric_features = X.select_dtypes(include=["int64", "float64"]).columns
-    categorical_features = X.select_dtypes(include=["object"]).columns
-
-    # Preprocessing pipelines
-    numeric_pipeline = Pipeline(
-        steps=[
-            ("imputer", KNNImputer(n_neighbors=5))
-        ]
-    )
-
-    categorical_pipeline = Pipeline(
-        steps=[
-            ("encoder", OneHotEncoder(handle_unknown="ignore", sparse_output=False))
-        ]
-    )
-
-    preprocessor = ColumnTransformer(
-        transformers=[
-            ("num", numeric_pipeline, numeric_features),
-            ("cat", categorical_pipeline, categorical_features),
-        ]
-    )
-
-    X_processed = preprocessor.fit_transform(X)
-
-    return X_processed, y, preprocessor
+    return X, y
