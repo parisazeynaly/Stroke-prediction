@@ -1,87 +1,109 @@
-#  Stroke Prediction with Machine Learning
+# Stroke Prediction — ML Pipeline
 
-A reproducible ML pipeline to predict stroke risk using demographic and health data.  
-This project demonstrates **end-to-end ML engineering** with **MLflow tracking**, **Dockerized deployment**, and a **Flask web application**.
-
----
-
-##  Motivation
-Stroke is one of the leading causes of death and disability worldwide.  
-Early prediction using accessible health indicators can help with preventive measures.  
-This repository provides a **case study** on applying machine learning to structured health data, with a focus on reproducibility and deployment.
+A reproducible machine learning pipeline to predict stroke risk from demographic and clinical data.
+Demonstrates end-to-end ML engineering: modular src layout, no data leakage, MLflow tracking, Docker deployment, and a Flask web app with optional LLM explanations.
 
 ---
 
-##  Dataset
-- **Source:** [Kaggle — Stroke Prediction Dataset](https://www.kaggle.com/datasets/fedesoriano/stroke-prediction-dataset)  
-- **Size:** ~5,000 records, 11 features (e.g., age, BMI, hypertension, smoking status).  
-- **Preprocessing:**
-  - Missing value imputation for BMI
-  - One-hot encoding for categorical features
-  - Scaling numerical features
+## Dataset
+
+- **Source:** [Kaggle — Stroke Prediction Dataset](https://www.kaggle.com/datasets/fedesoriano/stroke-prediction-dataset)
+- **Size:** ~5,000 records, 11 features (age, BMI, hypertension, smoking status, etc.)
+- Download the CSV and place it at `data/healthcare-dataset-stroke-data.csv`
 
 ---
 
-## ⚙️ Methods
-We trained and compared several models:
-- Logistic Regression
-- Random Forest
-- XGBoost
+## Quick start
 
-### Evaluation metrics:
-- Accuracy
-- Precision, Recall, F1-score
-- ROC-AUC
+```bash
+git clone https://github.com/parisazeynaly/Stroke-prediction.git
+cd Stroke-prediction
+pip install -r requirements.txt
 
----
+make train      # fit preprocessor + model, save to outputs/
+make eval       # evaluate on held-out test set, save reports/
+make run-api    # start Flask app at http://localhost:5000
+```
 
-##  Results
+Or run the full pipeline in one step:
 
-| Model              | Accuracy | F1-score | ROC-AUC |
-|--------------------|----------|----------|---------|
-| Logistic Regression| 0.82     | 0.71     | 0.85    |
-| Random Forest      | 0.86     | 0.75     | 0.90    |
-| XGBoost            | 0.88     | 0.78     | 0.92    |
-
- **XGBoost achieved the best balance between recall and ROC-AUC**
+```bash
+make reproduce
+```
 
 ---
 
-##  Deployment
+## Project structure
 
-- **MLflow Tracking:** All experiments logged with parameters, metrics, and artifacts.  
-- **Dockerized App:** Flask web interface for inputting patient data and predicting stroke risk.  
-- **Demo Screenshot:**  
-  ![App Demo](docs/demo.png)
-
----
-
-## Project Structure
+```
 Stroke-prediction/
-├── src/
-│ ├── data_preprocessing.py
-│ ├── stroke_prediction.py # main training & evaluation
-│ └── utils.py
+├── src/stroke_prediction/
+│   ├── utils.py        # load_data, make_xy, make_preprocessor
+│   ├── train.py        # fit + save model and preprocessor
+│   ├── evaluate.py     # threshold tuning, metrics, calibration curve
+│   └── predict.py      # single-record inference using saved artifacts
 ├── app/
-│ ├── app.py # Flask web server
-│ └── templates/
-│ └── index.html
-├── notebooks/ # EDA & model experiments
-├── requirements.txt
+│   └── app.py          # Flask API
+├── templates/
+│   └── index.html      # web UI
+├── data/               # put the CSV here (gitignored)
+├── outputs/            # saved model + preprocessor (gitignored)
+├── reports/            # metrics.json, classification_report.txt, plots
 ├── Dockerfile
-├── mlruns/ # MLflow artifacts
-└── README.md
+├── Makefile
+└── requirements.txt
+```
 
+---
 
-##  Conclusion
+## Methods
 
-This project developed and benchmarked multiple machine learning models for **stroke prediction** using structured health data.  
-Through systematic preprocessing, model comparison, and robustness testing, we demonstrated that ensemble-based methods such as **Random Forest** and **XGBoost** achieved the best balance between accuracy and stability.  
+**Preprocessing** (fit on training data only — no leakage):
+- KNN imputation for missing BMI values
+- Standard scaling for numeric features
+- One-hot encoding for categorical features
 
-The results highlight the importance of proper handling of class imbalance, feature scaling, and rigorous evaluation using F1(+), ROC-AUC, and PR-AUC metrics.  
-Robustness analysis under small input perturbations confirmed that the best models maintained high performance even with noisy data, emphasizing their reliability for clinical risk estimation tasks.  
+**Model:** Logistic Regression with `class_weight="balanced"` to handle severe class imbalance (~5% positive rate).
 
-While no explainability (XAI) module was used in this phase, the pipeline is designed to be fully extendable for future integration with explainable or trustworthy AI components.  
-This concludes the **Stroke Prediction** study and provides a solid methodological foundation for subsequent projects focusing on **RAG + Guardrail + XAI** architectures.
-the fiel is being under changes ....
-hhhh
+**Evaluation:**
+- ROC-AUC and PR-AUC (appropriate for imbalanced data)
+- Threshold tuning via precision-recall curve to maximise F1
+- Brier score and calibration curve
+
+---
+
+## Results
+
+| Metric | Value |
+|---|---|
+| ROC-AUC | 0.843 |
+| PR-AUC | 0.268 |
+| F1 @best threshold | 0.359 |
+| Best threshold | 0.844 |
+| Recall @best threshold | 0.420 |
+
+> Note: accuracy is not a meaningful metric here due to the ~5% stroke rate.
+> PR-AUC and recall are the primary evaluation targets.
+
+---
+
+## Deployment
+
+**Docker:**
+```bash
+docker build -t stroke-prediction .
+docker run -p 5000:5000 stroke-prediction
+```
+
+**With LLM explanations (optional):**
+```bash
+docker run -p 5000:5000 -e GOOGLE_API_KEY=your_key stroke-prediction
+```
+
+---
+
+## Design notes
+
+- The `preprocessor.joblib` saved at training time is the only object used at inference time — no manual feature engineering in the app.
+- Test indices are saved alongside the model so evaluation is always on the exact same held-out split.
+- `make reproduce` runs the full train → eval pipeline deterministically (random seed fixed).
